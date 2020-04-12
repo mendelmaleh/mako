@@ -122,6 +122,8 @@ void close_notification(struct mako_notification *notif,
 			wl_container_of(notif->state->history.prev, n, link);
 		destroy_notification(n);
 	}
+
+	index_notifications(notif->state);
 }
 
 struct mako_notification *get_notification(struct mako_state *state,
@@ -413,6 +415,32 @@ void insert_notification(struct mako_state *state, struct mako_notification *not
 	}
 
 	wl_list_insert(insert_node, &notif->link);
+}
+
+// Iterate through all the notifications and index them.
+int index_notifications(struct mako_state *state) {
+	struct mako_notification *notif = NULL;
+	size_t count = 0;
+	wl_list_for_each(notif, &state->notifications, link) {
+		notif->index = count++;
+
+		// TODO: At this point we really need to update only the first notificaton
+		int rematch_count = apply_each_criteria(&state->config.criteria, notif);
+		if (rematch_count == -1) {
+			// We encountered an allocation failure or similar while applying
+			// criteria. The notification may be partially matched, but the
+			// worst case is that it has an empty style, so bail.
+			fprintf(stderr, "Failed to apply criteria\n");
+			return -1;
+		} else if (rematch_count == 0) {
+			// This should be impossible, since the global criteria is always
+			// present in a mako_config and matches everything.
+			fprintf(stderr, "Notification matched zero criteria?!\n");
+			return -1;
+		}
+	}
+
+	return count;
 }
 
 // Iterate through all of the current notifications and group any that share

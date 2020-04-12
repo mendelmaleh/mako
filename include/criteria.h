@@ -31,6 +31,7 @@ struct mako_criteria {
 	char *body;
 	int group_index;
 	bool grouped;  // Whether group_index is non-zero
+	bool first;  // Whether its the first notification
 };
 
 struct mako_criteria *create_criteria(struct mako_config *config);

@@ -259,6 +259,8 @@ The following fields are available in criteria:
 - _desktop-entry_ (string)
 - _actionable_ (boolean)
 - _expiring_ (boolean)
+- _first (boolean)
+	- Whether the notification is first.
 - _grouped_ (boolean)
 	- Whether the notification is grouped with any others (its group-index is
 	  not -1).

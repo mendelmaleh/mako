@@ -26,6 +26,7 @@ struct mako_notification {
 	struct mako_icon *icon;
 
 	uint32_t id;
+	int index;
 	int group_index;
 	int group_count;
 
@@ -94,6 +95,7 @@ void notification_handle_touch(struct mako_notification *notif);
 void notification_execute_binding(struct mako_notification *notif,
 	enum mako_binding binding);
 void insert_notification(struct mako_state *state, struct mako_notification *notif);
+int index_notifications(struct mako_state *state);
 int group_notifications(struct mako_state *state, struct mako_criteria *criteria);
 
 #endif

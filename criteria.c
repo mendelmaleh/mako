@@ -101,6 +101,11 @@ bool match_criteria(struct mako_criteria *criteria,
 		return false;
 	}
 
+	if (spec.first &&
+			criteria->first != (notif->index == 0)) {
+		return false;
+	}
+
 	return true;
 }
 
@@ -298,6 +303,14 @@ bool apply_criteria_field(struct mako_criteria *criteria, char *token) {
 		}
 		criteria->spec.grouped = true;
 		return true;
+	} else if (strcmp(key, "first") == 0) {
+		if (!parse_boolean(value, &criteria->first)) {
+			fprintf(stderr, "Invalid value '%s' for boolean field '%s'\n",
+					value, key);
+			return false;
+		}
+		criteria->spec.first = true;
+		return true;
 	} else {
 		if (bare_key) {
 			fprintf(stderr, "Invalid boolean criteria field '%s'\n", key);
@@ -372,6 +385,7 @@ struct mako_criteria *create_criteria_from_notification(
 	criteria->body = strdup(notif->body);
 	criteria->group_index = notif->group_index;
 	criteria->grouped = (notif->group_index >= 0);
+	criteria->first = (notif->index == 0);
 
 	return criteria;
 }

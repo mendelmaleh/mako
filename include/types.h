@@ -51,6 +51,7 @@ struct mako_criteria_spec {
 	bool body;
 	bool group_index;
 	bool grouped;
+	bool first;
 
 	bool none; // Special criteria that never matches, used for grouping
 };

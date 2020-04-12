@@ -250,6 +250,8 @@ static void reapply_config(struct mako_state *state) {
 		}
 		group_notifications(state, notif_criteria);
 		free(notif_criteria);
+
+		index_notifications(state);
 	}
 
 	set_dirty(state);
