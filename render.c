@@ -312,8 +312,7 @@ static int render_notification(cairo_t *cairo, struct mako_state *state,
 		// Render icon
 		double xpos = offset_x + style->border_size +
 			(text_x - icon->width) / 2;
-		double ypos = offset_y + titlebar_height +
-			(layout_height - icon->height - style->border_size) / 2;
+		double ypos = offset_y + titlebar_height + style->padding.top;
 		draw_icon(cairo, icon, xpos, ypos, scale);
 	}
 
